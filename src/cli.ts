@@ -7,6 +7,7 @@ import { Command } from 'commander'
 import { execa } from 'execa'
 import PQueue from 'p-queue'
 import { findCookiesFile } from './cookies'
+import { sleep } from './utils'
 
 // Define the program version and description
 const program = new Command()
@@ -40,11 +41,24 @@ async function uploadFile(filePath: string): Promise<void> {
 
     // Use biliup to upload the file
     const cookies = findCookiesFile(userCookiePath)
+
+    const startTimestamp = Date.now()
     await execa('biliup', ['--user-cookie', cookies, 'upload', filePath, '--tag', tag], {
       stdio: 'inherit',
     })
+
     // Delete file after successful upload
     await fs.promises.unlink(filePath)
+
+    const endTimestamp = Date.now()
+    const duration = endTimestamp - startTimestamp
+    console.log(`Upload duration: ${duration}ms`)
+
+    // bilibili api upload interval must greater than 30 seconds
+    if (duration < 30_000) {
+      console.log(`上传时间小于30秒，等待${(30_000 - duration) / 1000}秒`)
+      await sleep(30_000 - duration)
+    }
 
     console.log(`Successfully uploaded: ${filePath}`)
   }
