@@ -1,7 +1,7 @@
 {
   "name": "biliup-watcher",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "packageManager": "pnpm@10.6.2",
   "description": "a directory watcher for biliup",
   "author": "gweesin<gweesin2000@gmail.com>",
