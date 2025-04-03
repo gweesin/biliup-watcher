@@ -8,10 +8,10 @@ import PQueue from 'p-queue'
 import { uploadWithSpinner } from './upload'
 
 interface CLIOptions {
-  directory?: string
-  concurrency?: number
-  userCookie?: string
-  tag?: string
+  directory: string
+  concurrency: number
+  userCookie: string
+  tag: string
 }
 
 // Define the program version and description
@@ -23,13 +23,13 @@ program
   .option('-c, --concurrency <number>', 'Maximum concurrent uploads', Number.parseInt, 1)
   .option('-u, --user-cookie <path>', 'Path to user cookies.json file')
   .option('--tag <tag>', 'Tag for the upload')
-  .action(async (options: CLIOptions) => {
-    const defaultOptions: CLIOptions = {
+  .action(async (options: Partial<CLIOptions>) => {
+    const defaultOptions: Partial<CLIOptions> = {
       directory: process.cwd(),
       userCookie: path.join(process.cwd(), 'cookies.json'),
     }
 
-    const { directory: watchDir, concurrency, userCookie, tag } = Object.assign(defaultOptions, options) as Required<CLIOptions>
+    const { directory: watchDir, concurrency, userCookie, tag } = Object.assign(defaultOptions, options) as CLIOptions
     console.log(options)
 
     // Initialize upload queue with concurrency limit
