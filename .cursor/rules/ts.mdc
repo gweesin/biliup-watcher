@@ -1,0 +1,11 @@
+---
+description: TypeScript coding standards
+globs: **/*.ts,**/*.mts
+---
+- 使用 `const` 而不是 `let` 来声明常量、变量
+- 使用2个空格缩进
+- 显式声明函数返回类型
+- 使用单引号
+- 偏好使用箭头函数
+- 偏好使用解构赋值
+- 避免使用 `any` 类型
