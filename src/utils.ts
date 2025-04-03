@@ -9,3 +9,10 @@ export async function waitWithSpinner(ms: number, options: { loadingText: string
   await sleep(ms)
   spinner.succeed(options.endText)
 }
+
+// eslint-disable-next-line regexp/no-unused-capturing-group
+const videoExtensions = /\.(mp4|avi|mkv|mov|webm|flv|wmv|3gp|mpeg|ogv)$/i
+
+export function isVideoFile(filename: string): boolean {
+  return videoExtensions.test(filename)
+}
