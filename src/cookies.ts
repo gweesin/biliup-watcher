@@ -9,6 +9,7 @@ import process from 'node:process'
  */
 export function findCookiesFile(cookiesPath?: string): string {
   if (cookiesPath && fs.existsSync(cookiesPath)) {
+    // eslint-disable-next-line no-console
     console.log(`Using specified cookies file: ${cookiesPath}`)
     return cookiesPath
   }
@@ -20,6 +21,7 @@ export function findCookiesFile(cookiesPath?: string): string {
   while (currentDir !== rootDir) {
     const testPath = path.join(currentDir, 'cookies.json')
     if (fs.existsSync(testPath)) {
+    // eslint-disable-next-line no-console
       console.log(`Found cookies file: ${testPath}`)
       return testPath
     }
@@ -30,6 +32,7 @@ export function findCookiesFile(cookiesPath?: string): string {
   // Check root directory as well
   const rootPath = path.join(rootDir, 'cookies.json')
   if (fs.existsSync(rootPath)) {
+    // eslint-disable-next-line no-console
     console.log(`Found cookies file: ${rootPath}`)
     return rootPath
   }
