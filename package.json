@@ -47,13 +47,14 @@
     "chokidar": "^4.0.3",
     "commander": "^13.1.0",
     "execa": "^9.5.2",
+    "ora": "^8.2.0",
     "p-queue": "^8.1.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.11.0",
     "@antfu/ni": "^24.3.0",
     "@antfu/utils": "^9.2.0",
-    "@types/node": "^22.13.17",
+    "@types/node": "^22.14.0",
     "bumpp": "^10.1.0",
     "eslint": "^9.23.0",
     "lint-staged": "^15.5.0",

@@ -1,14 +1,11 @@
 #!/usr/bin/env node
 
-import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
 import chokidar from 'chokidar'
 import { Command } from 'commander'
-import { execa } from 'execa'
 import PQueue from 'p-queue'
-import { findCookiesFile } from './cookies'
-import { sleep } from './utils'
+import { uploadWithSpinner } from './upload'
 
 interface CLIOptions {
   directory?: string
@@ -37,43 +34,6 @@ program
 
     // Initialize upload queue with concurrency limit
     const queue = new PQueue({ concurrency })
-
-    /**
-     * Upload file to Bilibili
-     * @param {string} filePath Path to file
-     * @returns {Promise<void>}
-     */
-    async function uploadFile(filePath: string): Promise<void> {
-      try {
-        console.log(`Starting upload for: ${filePath}`)
-
-        // Use biliup to upload the file
-        const cookies = findCookiesFile(userCookie)
-
-        const startTimestamp = Date.now()
-        await execa('biliup', ['--user-cookie', cookies, 'upload', filePath, '--tag', tag], {
-          stdio: 'inherit',
-        })
-
-        // Delete file after successful upload
-        await fs.promises.unlink(filePath)
-
-        const endTimestamp = Date.now()
-        const duration = endTimestamp - startTimestamp
-        console.log(`Upload duration: ${duration}ms`)
-
-        // bilibili api upload interval must greater than 30 seconds
-        if (duration < 30_000) {
-          console.log(`上传时间小于30秒，等待${(30_000 - duration) / 1000}秒`)
-          await sleep(30_000 - duration)
-        }
-
-        console.log(`Successfully uploaded: ${filePath}`)
-      }
-      catch (error) {
-        console.error(`Failed to upload ${filePath}:`, error)
-      }
-    }
 
     // Create a file watcher
     const watcher = chokidar.watch(watchDir, {
@@ -109,7 +69,11 @@ program
         fileTimers.delete(filePath)
 
         // Add to upload queue
-        queue.add(() => uploadFile(filePath))
+        queue.add(async () => uploadWithSpinner({
+          filePath,
+          userCookie,
+          tag,
+        }))
           .then(() => {
             console.log(`Finished processing ${filePath}`)
           })
