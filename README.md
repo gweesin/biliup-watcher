@@ -13,7 +13,7 @@ Automatically upload videos to bilibili when they are uploaded to the specified 
 ## Usage
 
 ```bash
-pnpx biliup-watcher --cookies <cookiesPath>
+pnpx biliup-watcher --directory <directory> --user-cookie <cookiesPath> --tag <tag>
 ```
 
 ## peer dependencies
