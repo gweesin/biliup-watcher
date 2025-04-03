@@ -5,6 +5,7 @@ import process from 'node:process'
 import chokidar from 'chokidar'
 import { Command } from 'commander'
 import PQueue from 'p-queue'
+import { version } from '../package.json'
 import { uploadWithSpinner } from './upload'
 
 interface CLIOptions {
@@ -17,7 +18,7 @@ interface CLIOptions {
 // Define the program version and description
 const program = new Command()
 program
-  .version('1.0.0')
+  .version(version)
   .description('Watch directory and upload files to Bilibili')
   .option('-d, --directory <dir>', 'Directory to watch')
   .option('-c, --concurrency <number>', 'Maximum concurrent uploads', Number.parseInt, 1)
