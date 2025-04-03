@@ -40,8 +40,8 @@ program
       persistent: true,
       ignoreInitial: false,
       awaitWriteFinish: {
-        stabilityThreshold: 2000, // Wait for 2 seconds of stability
-        pollInterval: 100,
+        stabilityThreshold: 5000, // Wait for stability
+        pollInterval: 1000,
       },
     })
 
