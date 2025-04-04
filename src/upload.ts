@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import { execa } from 'execa'
 import { findCookiesFile } from './cookies'
-import { waitWithSpinner } from './utils'
+import { sleep, waitWithSpinner } from './utils'
 
 export interface UploadOptions {
   filePath: string
@@ -56,16 +56,19 @@ export async function uploadWithSpinner(options: UploadOptions): Promise<void> {
   // eslint-disable-next-line no-console
   console.log(`Upload duration: ${duration}ms`)
 
+  // add a random buffer time to avoid upload interval limit
+  const bufferTime = Math.random() * 10_000
+
   // bilibili api upload interval must greater than 30 seconds
   const waitTime = 30_000 - duration
   if (waitTime > 0) {
-    // add a random buffer time to avoid upload interval limit
-    const bufferTime = Math.random() * 10_000
-
     await waitWithSpinner(waitTime + bufferTime, {
       beginText: `bilibili api 限制上传间隔需要大于 30 秒，需等待 ${waitTime}ms`,
       loadingText: '等待中...',
       endText: '等待完成',
     })
+  }
+  else {
+    await sleep(bufferTime)
   }
 }
