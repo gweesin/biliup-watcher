@@ -31,7 +31,6 @@ program
     }
 
     const { directory: watchDir, concurrency, userCookie, tag } = Object.assign(defaultOptions, options) as CLIOptions
-    console.log(options)
 
     // Initialize upload queue with concurrency limit
     const queue = new PQueue({ concurrency })
