@@ -45,6 +45,13 @@ program
         stabilityThreshold: 5000, // Wait for stability
         pollInterval: 1000,
       },
+      ignored: (filepath, stats) => {
+        if (!stats?.isFile()) {
+          return false
+        }
+
+        return !isVideoFile(filepath)
+      },
     })
 
     // File stability timeout map
@@ -64,8 +71,8 @@ program
       const stats = fs.statSync(filePath)
       const fileSizeInMB = stats.size / (1024 * 1024)
 
-      if (!isVideoFile(filePath) || fileSizeInMB < 2) {
-        console.log(`Skipping file: ${filePath} (${!isVideoFile(filePath) ? 'not a video file' : 'file size < 2MB'})`)
+      if (fileSizeInMB < 2) {
+        console.log(`Skipping file: ${filePath} (file size < 2MB)`)
         return
       }
 
