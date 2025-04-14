@@ -42,7 +42,7 @@ program
     // Create a file watcher
     const watcher = chokidar.watch(watchDir, {
       persistent: true,
-      ignoreInitial: false,
+      ignoreInitial: true,
       awaitWriteFinish: {
         stabilityThreshold, // Wait for stability
         pollInterval: Math.max(stabilityThreshold / 20, 1000),
