@@ -15,6 +15,7 @@ interface CLIOptions {
   concurrency: number
   userCookie: string
   tag: string
+  stabilityThreshold: number
 }
 
 // Define the program version and description
@@ -26,13 +27,14 @@ program
   .option('-c, --concurrency <number>', 'Maximum concurrent uploads', Number.parseInt, 1)
   .option('-u, --user-cookie <path>', 'Path to user cookies.json file')
   .option('--tag <tag>', 'Tag for the upload')
+  .option('--stability-threshold <number>', 'Stability threshold for the upload', Number.parseInt, 5000)
   .action(async (options: Partial<CLIOptions>) => {
     const defaultOptions: Partial<CLIOptions> = {
       directory: process.cwd(),
       userCookie: path.join(process.cwd(), 'cookies.json'),
     }
 
-    const { directory: watchDir, concurrency, userCookie, tag } = Object.assign(defaultOptions, options) as CLIOptions
+    const { directory: watchDir, concurrency, userCookie, tag, stabilityThreshold } = Object.assign(defaultOptions, options) as CLIOptions
 
     // Initialize upload queue with concurrency limit
     const queue = new PQueue({ concurrency })
@@ -42,8 +44,8 @@ program
       persistent: true,
       ignoreInitial: false,
       awaitWriteFinish: {
-        stabilityThreshold: 5000, // Wait for stability
-        pollInterval: 1000,
+        stabilityThreshold, // Wait for stability
+        pollInterval: Math.max(stabilityThreshold / 20, 1000),
       },
       ignored: (filepath, stats) => {
         if (!stats?.isFile()) {
