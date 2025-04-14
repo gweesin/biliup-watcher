@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
 import chokidar from 'chokidar'
@@ -7,6 +8,7 @@ import { Command } from 'commander'
 import PQueue from 'p-queue'
 import { version } from '../package.json'
 import { uploadWithSpinner } from './upload'
+import { isVideoFile } from './utils'
 
 interface CLIOptions {
   directory: string
@@ -58,6 +60,15 @@ program
      * @param {string} filePath Path to the changed file
      */
     function handleFileChange(filePath: string): void {
+      // Only process video files
+      const stats = fs.statSync(filePath)
+      const fileSizeInMB = stats.size / (1024 * 1024)
+
+      if (!isVideoFile(filePath) || fileSizeInMB < 2) {
+        console.log(`Skipping file: ${filePath} (${!isVideoFile(filePath) ? 'not a video file' : 'file size < 2MB'})`)
+        return
+      }
+
       // Clear existing timer for this file if it exists
       if (fileTimers.has(filePath)) {
         clearTimeout(fileTimers.get(filePath)!)
