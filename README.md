@@ -12,8 +12,28 @@ Automatically upload videos to bilibili when they are uploaded to the specified 
 
 ## Usage
 
+quickly usage:
+
 ```bash
 pnpx biliup-watcher --directory <directory> --user-cookie <cookiesPath> --tag <tag>
+```
+
+full options:
+
+```bash
+Usage: biliup-watcher [options]
+
+Watch directory and upload files to Bilibili
+
+Options:
+  -V, --version                   output the version number
+  -d, --directory <dir>           Directory to watch
+  -c, --concurrency <number>      Maximum concurrent uploads (default: 1)
+  -u, --user-cookie <path>        Path to user cookies.json file
+  --tag <tag>                     Tag for the upload
+  --stability-threshold <number>  Stability threshold for the upload (default: 5000)
+  --limit <number>                Limit the number of threads (default: 1)
+  -h, --help                      display help for command
 ```
 
 ## peer dependencies

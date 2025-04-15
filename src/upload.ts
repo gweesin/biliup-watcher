@@ -7,6 +7,7 @@ export interface UploadOptions {
   filePath: string
   userCookie: string
   tag: string
+  limit: number
 }
 
 /**
@@ -22,7 +23,7 @@ async function uploadFile(options: UploadOptions): Promise<void> {
     // Use biliup to upload the file
     const cookies = findCookiesFile(options.userCookie)
 
-    await execa('biliup', ['--user-cookie', cookies, 'upload', options.filePath, '--tag', options.tag], {
+    await execa('biliup', ['--user-cookie', cookies, 'upload', options.filePath, '--tag', options.tag, '--limit', String(options.limit)], {
       stdio: 'inherit',
     })
 
