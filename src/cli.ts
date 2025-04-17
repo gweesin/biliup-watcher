@@ -27,9 +27,9 @@ program
   .option('-d, --directory <dir>', 'Directory to watch')
   .option('-c, --concurrency <number>', 'Maximum concurrent uploads', Number.parseInt, 1)
   .option('-u, --user-cookie <path>', 'Path to user cookies.json file')
-  .option('--tag <tag>', 'Tag for the upload')
+  .option('--tag <tag>', 'Tag for the upload, split by comma')
   .option('--stability-threshold <number>', 'Stability threshold for the upload', Number.parseInt, 5000)
-  .option('--limit <number>', 'Limit the number of threads', Number.parseInt, 1)
+  .option('--limit <number>', 'Limit the number of threads. If your network speed is too slow (below 1Mbps), we recommend using the default value.', Number.parseInt, 1)
   .action(async (options: Partial<CLIOptions>) => {
     const defaultOptions: Partial<CLIOptions> = {
       directory: process.cwd(),

@@ -30,9 +30,9 @@ Options:
   -d, --directory <dir>           Directory to watch
   -c, --concurrency <number>      Maximum concurrent uploads (default: 1)
   -u, --user-cookie <path>        Path to user cookies.json file
-  --tag <tag>                     Tag for the upload
+  --tag <tag>                     Tag for the upload, split by comma
   --stability-threshold <number>  Stability threshold for the upload (default: 5000)
-  --limit <number>                Limit the number of threads (default: 1)
+  --limit <number>                Limit the number of threads. If your network speed is too slow (below 1Mbps), we recommend using the default value.
   -h, --help                      display help for command
 ```
 
