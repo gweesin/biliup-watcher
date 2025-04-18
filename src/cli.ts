@@ -32,7 +32,7 @@ program
   .option('--tag <tag>', 'Tag for the upload, split by comma')
   .option('--stability-threshold <number>', 'Stability threshold for the upload', Number.parseInt, 5000)
   .option('--limit <number>', 'Limit the number of threads. If your network speed is too slow (below 1Mbps), we recommend using the default value.', Number.parseInt, 1)
-  .option('--ignored <terms...>', 'Ignore files containing specific terms in their names', (val: string[]) => val.map(term => term.trim()))
+  .option('--ignored <terms...>', 'Ignore files containing specific terms in their names')
   .action(async (options: Partial<CLIOptions>) => {
     const defaultOptions: Partial<CLIOptions> = {
       directory: process.cwd(),
