@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import type { Matcher } from 'chokidar'
 import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
@@ -17,6 +18,7 @@ interface CLIOptions {
   tag: string
   stabilityThreshold: number
   limit: number
+  ignored: string[]
 }
 
 // Define the program version and description
@@ -30,16 +32,26 @@ program
   .option('--tag <tag>', 'Tag for the upload, split by comma')
   .option('--stability-threshold <number>', 'Stability threshold for the upload', Number.parseInt, 5000)
   .option('--limit <number>', 'Limit the number of threads. If your network speed is too slow (below 1Mbps), we recommend using the default value.', Number.parseInt, 1)
+  .option('--ignored <terms...>', 'Ignore files containing specific terms in their names', (val: string[]) => val.map(term => term.trim()))
   .action(async (options: Partial<CLIOptions>) => {
     const defaultOptions: Partial<CLIOptions> = {
       directory: process.cwd(),
       userCookie: path.join(process.cwd(), 'cookies.json'),
+      ignored: [],
     }
 
-    const { directory: watchDir, concurrency, userCookie, tag, stabilityThreshold, limit } = Object.assign(defaultOptions, options) as CLIOptions
+    const { directory: watchDir, concurrency, userCookie, tag, stabilityThreshold, limit, ignored } = Object.assign(defaultOptions, options) as CLIOptions
 
     // Initialize upload queue with concurrency limit
     const queue = new PQueue({ concurrency })
+
+    const ignoredFn: Matcher = (filepath, stats) => {
+      if (!stats?.isFile()) {
+        return false
+      }
+
+      return !isVideoFile(filepath)
+    }
 
     // Create a file watcher
     const watcher = chokidar.watch(watchDir, {
@@ -49,13 +61,7 @@ program
         stabilityThreshold, // Wait for stability
         pollInterval: Math.max(stabilityThreshold / 20, 1000),
       },
-      ignored: (filepath, stats) => {
-        if (!stats?.isFile()) {
-          return false
-        }
-
-        return !isVideoFile(filepath)
-      },
+      ignored: [ignoredFn, ...ignored],
     })
 
     // File stability timeout map
