@@ -5,44 +5,44 @@
 [![bundle][bundle-src]][bundle-href]
 [![JSDocs][jsdocs-src]][jsdocs-href]
 [![License][license-src]][license-href]
-English | [中文](./README.zh-CN.md)
+[English](./README.md) | 中文
 
-a directory watcher for biliup.
+bilibili视频自动上传监视器。
 
-Automatically upload videos to bilibili when they are uploaded to the specified directory.
+当视频文件上传到指定目录时，自动将其上传至哔哩哔哩。
 
-## Usage
+## 使用方法
 
-quickly usage:
+快速使用:
 
 ```bash
-pnpx biliup-watcher --directory <directory> --user-cookie <cookiesPath> --tag <tag>
+pnpx biliup-watcher --directory <目录路径> --user-cookie <cookies文件路径> --tag <标签>
 ```
 
-full options:
+完整选项:
 
 ```bash
 Usage: biliup-watcher [options]
 
-Watch directory and upload files to Bilibili
+监视目录并将视频上传到哔哩哔哩
 
-Options:
-  -V, --version                   output the version number
-  -d, --directory <dir>           Directory to watch
-  -c, --concurrency <number>      Maximum concurrent uploads (default: 1)
-  -u, --user-cookie <path>        Path to user cookies.json file
-  --tag <tag>                     Tag for the upload, split by comma
-  --stability-threshold <number>  Stability threshold for the upload (default: 5000)
-  --limit <number>                Limit the number of threads. If your network speed is too slow (below 1Mbps), we recommend using the default value.
-  --ignored <terms>               Ignore files containing specific terms in their names (comma separated)
-  -h, --help                      display help for command
+选项:
+  -V, --version                   输出版本号
+  -d, --directory <dir>           要监视的目录
+  -c, --concurrency <number>      最大并发上传数 (默认: 1)
+  -u, --user-cookie <path>        用户cookies.json文件路径
+  --tag <tag>                     上传标签，用逗号分隔
+  --stability-threshold <number>  文件稳定性阈值 (默认: 5000)
+  --limit <number>                线程数限制。如果你的网络速度太慢（低于1Mbps），建议使用默认值
+  --ignored <terms>               忽略文件名中包含特定关键词的文件（用逗号分隔）
+  -h, --help                      显示帮助信息
 ```
 
-## peer dependencies
+## 依赖项
 
 - [biliup-rs](https://github.com/biliup/biliup-rs)
 
-## License
+## 许可证
 
 [MIT](./LICENSE) License © [gweesin](https://github.com/gweesin)
 
