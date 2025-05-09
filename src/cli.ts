@@ -77,16 +77,6 @@ program
      * @param {string} filePath Path to the changed file
      */
     function handleFileChange(filePath: string): void {
-      // Only process video files
-      const stats = fs.statSync(filePath)
-      const fileSizeInMB = stats.size / (1024 * 1024)
-
-      if (fileSizeInMB < 20) {
-        console.log(`Remove file: ${filePath} (file size < 20MB)`)
-        fs.rmSync(filePath)
-        return
-      }
-
       // Clear the existing timer for this file if it exists
       if (fileTimers.has(filePath)) {
         clearTimeout(fileTimers.get(filePath)!)
@@ -94,6 +84,15 @@ program
 
       // Set a new timer for this file
       const timer = setTimeout(() => {
+        const stats = fs.statSync(filePath)
+        const fileSizeInMB = stats.size / (1024 * 1024)
+
+        if (fileSizeInMB < 20) {
+          console.log(`Remove file: ${filePath} (file size < 20MB)`)
+          fs.rmSync(filePath)
+          return
+        }
+
         console.log(`File ${filePath} is stable, queueing for upload`)
         fileTimers.delete(filePath)
 
