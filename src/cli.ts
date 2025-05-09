@@ -27,11 +27,11 @@ program
   .version(version)
   .description('Watch directory and upload files to Bilibili')
   .option('-d, --directory <dir>', 'Directory to watch')
-  .option('-c, --concurrency <number>', 'Maximum concurrent uploads', Number.parseInt, 1)
+  .option('-c, --concurrency <number>', 'Maximum concurrent uploads', value => Number.parseInt(value), 1)
   .option('-u, --user-cookie <path>', 'Path to user cookies.json file')
   .option('--tag <tag>', 'Tag for the upload, split by comma')
-  .option('--stability-threshold <number>', 'Stability threshold for the upload', Number.parseInt, 5000)
-  .option('--limit <number>', 'Limit the number of threads. If your network speed is too slow (below 1Mbps), we recommend using the default value.', Number.parseInt, 1)
+  .option('--stability-threshold <number>', 'Stability threshold for the upload', value => Number.parseInt(value), 5000)
+  .option('--limit <number>', 'Limit the number of threads. If your network speed is too slow (below 1Mbps), we recommend using the default value.', value => Number.parseInt(value), 1)
   .option('--ignored <terms...>', 'Ignore files containing specific terms in their names')
   .action(async (options: Partial<CLIOptions>) => {
     const defaultOptions: Partial<CLIOptions> = {
