@@ -53,20 +53,20 @@ program
       return !isVideoFile(filepath)
     }
 
+    const STABILITY_TIMEOUT = 5000 // 5 seconds of stability before upload
     // Create a file watcher
     const watcher = chokidar.watch(watchDir, {
       persistent: true,
       ignoreInitial: false,
       awaitWriteFinish: {
         stabilityThreshold, // Wait for stability
-        pollInterval: Math.max(stabilityThreshold / 20, 1000),
+        pollInterval: Math.max(stabilityThreshold / 20, STABILITY_TIMEOUT),
       },
       ignored: [ignoredFn, ...ignored],
     })
 
     // File stability timeout map
     const fileTimers: Map<string, NodeJS.Timeout> = new Map()
-    const STABILITY_TIMEOUT = 5000 // 5 seconds of stability before upload
 
     // Handle new or changed files
     watcher.on('add', filePath => handleFileChange(filePath))
@@ -81,12 +81,13 @@ program
       const stats = fs.statSync(filePath)
       const fileSizeInMB = stats.size / (1024 * 1024)
 
-      if (fileSizeInMB < 2) {
-        console.log(`Skipping file: ${filePath} (file size < 2MB)`)
+      if (fileSizeInMB < 20) {
+        console.log(`Remove file: ${filePath} (file size < 20MB)`)
+        fs.rmSync(filePath)
         return
       }
 
-      // Clear existing timer for this file if it exists
+      // Clear the existing timer for this file if it exists
       if (fileTimers.has(filePath)) {
         clearTimeout(fileTimers.get(filePath)!)
       }

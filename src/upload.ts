@@ -37,8 +37,8 @@ async function uploadFile(options: UploadOptions): Promise<void> {
     console.error(`Failed to upload ${options.filePath}:`, error)
 
     // todo: check if the error is because of upload interval
-    await waitWithSpinner(30_000, { loadingText: '您投稿的频率过快，请稍等30秒' })
-    return uploadFile(options)
+    // await waitWithSpinner(30_000, { loadingText: '您投稿的频率过快，请稍等30秒' })
+    // return uploadFile(options)
   }
 }
 
@@ -66,7 +66,7 @@ export async function uploadWithSpinner(options: UploadOptions): Promise<void> {
     await waitWithSpinner(waitTime + bufferTime, {
       beginText: `bilibili api 限制上传间隔需要大于 30 秒，需等待 ${waitTime}ms`,
       loadingText: '等待中...',
-      endText: '等待完成',
+      endText: 'bilibili api 上传间隔等待完成',
     })
   }
   else {
