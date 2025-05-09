@@ -110,7 +110,7 @@ program
           .catch((err) => {
             console.error(`Error processing ${filePath}:`, err)
           })
-      }, STABILITY_TIMEOUT)
+      }, stabilityThreshold)
 
       fileTimers.set(filePath, timer)
     }
