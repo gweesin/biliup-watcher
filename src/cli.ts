@@ -97,13 +97,14 @@ program
         console.log(`File ${filePath} is stable, queueing for upload`)
         fileTimers.delete(filePath)
 
+        const priority = Number.MAX_SAFE_INTEGER - Number.parseInt(filePath.replace(/\D/g, ''))
         // Add to upload queue
         queue.add(async () => uploadWithSpinner({
           filePath,
           userCookie,
           tag,
           limit,
-        }))
+        }), { priority })
           .then(() => {
             console.log(`Finished processing ${filePath}`)
           })
